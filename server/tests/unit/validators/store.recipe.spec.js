@@ -4,6 +4,7 @@ import validators from "../../../validators";
 const { StoreRecipeValidator } = validators;
 
 const testStoreRecipeValidator = testValidatorFactory(StoreRecipeValidator);
+
 describe("The StoreRecipeValidator class", () => {
   describe("The isValid function", () => {
     test("Should return false when no recipe is provided", () => {
