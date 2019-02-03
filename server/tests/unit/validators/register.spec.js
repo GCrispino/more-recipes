@@ -1,56 +1,46 @@
+//@ts-check
+import { testValidator,testValidatorAsync } from './utils';
 import validators from '../../../validators'
 import { User } from '../../../database/models'
 
 const { RegisterUserValidator } = validators;
 
+const testRegisterUserValidator = (validatorObj,validatorFunctionName,beforeAction) => 
+  testValidator(RegisterUserValidator,validatorObj,validatorFunctionName,beforeAction);
+
+const testRegisterUserValidatorAsync = (validatorObj,validatorFunctionName,beforeAction) => 
+  testValidatorAsync(RegisterUserValidator,validatorObj,validatorFunctionName,beforeAction);
 
 describe('The RegisterUserValidator class',() => {
   describe('The validateName function', () => {
 
     test('The validateName function adds a required error to the errors array if name is not provided', () => {
-
-      const validator = new RegisterUserValidator({});
-
-      validator.validateName();
-
-      const { errors } = validator;
+      const [ _,__,errors ] = testRegisterUserValidator({},'validateName');
 
       expect(errors).toEqual(['The name is required.'])
     });
 
     test('Adds an error if name is less than 5 characters', () => {
-      const validator = new RegisterUserValidator({
+      const [ _,__,errors ] = testRegisterUserValidator({
         name: 'test'
-      });
-      validator.validateName();
-
-      const { errors } = validator;
+      },'validateName');
 
       expect(errors).toEqual(['The name must be longer than 5 characters.'])
-
     });
   });
 
   describe('The validatePassword function', () => {
 
     test('The validatePassword function adds a required error to the errors array if password is not provided', () => {
-
-      const validator = new RegisterUserValidator({});
-
-      validator.validatePassword();
-
-      const { errors } = validator;
+      const [ _,__,errors ] = testRegisterUserValidator({},'validatePassword');
 
       expect(errors).toEqual(['The password is required.'])
     });
 
     test('Adds an error if password is less than 5 characters', () => {
-      const validator = new RegisterUserValidator({
+      const [ _,__,errors ] = testRegisterUserValidator({
         password: 'test'
-      });
-      validator.validatePassword();
-
-      const { errors } = validator;
+      },'validatePassword');
 
       expect(errors).toEqual(['The password must be longer than 5 characters.'])
 
@@ -61,48 +51,37 @@ describe('The RegisterUserValidator class',() => {
   describe('The validateEmail function',() => {
 
     test('Adds a required error to the errors array if email is not provided',async () => {
-      const validator = new RegisterUserValidator({
+      const [ _,__,errors ] = await testRegisterUserValidatorAsync({
         name: 'test'
-      });
-
-      await validator.validateEmail();
-
-      const { errors } = validator;
+      },'validateEmail');
 
       expect(errors).toEqual(['The email is required.'])
-      
     });
 
     test('Adds an error if email is invalid', async () => {
-      const validator = new RegisterUserValidator({
+      const [ _,__,errors ] = await testRegisterUserValidatorAsync({
         name: 'test',
         email: 'testing'
-      });
-
-      await validator.validateEmail();
-
-      const { errors } = validator;
+      },'validateEmail');
 
       expect(errors).toEqual(['The email must be a valid email address.'])
     });
 
     test('Adds an email taken error if user already exists with that email', async () => {
-      await User.destroy({ where: {} });
 
+      await User.destroy({ where: {} });
+      
       await User.create({
         name: 'bahdcoder',
         email: 'bahdcoder@gmail.com',
         password: 'password'
       });
 
-      const validator = new RegisterUserValidator({
+      const [ _,__,errors ] = await testRegisterUserValidatorAsync({
         email: 'bahdcoder@gmail.com'
-      })
+      },'validateEmail');
 
-      const { errors } = validator;
 
-      await validator.validateEmail();
-      
       expect(errors).toEqual(['A user with this email already exists.']);
 
     })
@@ -115,13 +94,11 @@ describe('The RegisterUserValidator class',() => {
 
       await User.destroy({ where: {} });
 
-      const validator = new RegisterUserValidator({
+      const [ _,result ] = await testRegisterUserValidatorAsync({
         name: 'bahdcoder',
         email: 'bahdcoder@gmail.com',
         password: 'password'
-      });
-
-      const result = await validator.isValid();
+      },'isValid');
 
       expect(result).toBe(true);
       
@@ -131,30 +108,28 @@ describe('The RegisterUserValidator class',() => {
 
       await User.destroy({ where: {} });
 
-      const validator = new RegisterUserValidator({
+      const [ _,result ] = await testRegisterUserValidatorAsync({
         name: 'bahd',
         email: 'bahdcoder@gmail.com',
         password: 'password'
-      });
-
-      const result = await validator.isValid();
+      },'isValid');
 
       expect(result).toBe(false);
       
     });
 
     test('The validateName, validateEmail and validatePassword functions are called in the isValid function', async () => {
-      const validator = new RegisterUserValidator({
+      const beforeAction = validator => {
+        jest.spyOn(validator,'validateName');
+        jest.spyOn(validator,'validateEmail');
+        jest.spyOn(validator,'validatePassword');
+      };
+      
+      const [ validator ] = await testRegisterUserValidatorAsync({
         name: 'test',
         password: 'pass',
         email: 'bahdcoder@gmail'
-      });
-
-      jest.spyOn(validator,'validateName');
-      jest.spyOn(validator,'validateEmail');
-      jest.spyOn(validator,'validatePassword');
-
-      await validator.isValid();
+      },'isValid',beforeAction);
 
       expect(validator.validateName).toHaveBeenCalled();
       expect(validator.validateEmail).toHaveBeenCalled();
