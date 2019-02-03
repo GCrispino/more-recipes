@@ -2,7 +2,7 @@ export function testValidator(
   validatorClass,
   validatorObj,
   validatorFunctionName,
-  beforeAction = x => {}
+  beforeAction = x => x
 ) {
   const validator = new validatorClass(validatorObj);
 
@@ -19,7 +19,7 @@ export async function testValidatorAsync(
   validatorClass,
   validatorObj,
   validatorFunctionName,
-  beforeAction = x => {}
+  beforeAction = x => x
 ) {
   const validator = new validatorClass(validatorObj);
 
