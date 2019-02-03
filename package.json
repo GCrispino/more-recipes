@@ -8,7 +8,8 @@
     "start": "cross-env NODE_ENV=production node build/index.js",
     "build": "./node_modules/.bin/babel server/ -d build --copy-files",
     "migrate:refresh": "./node_modules/.bin/sequelize db:migrate:undo:all && ./node_modules/.bin/sequelize db:migrate",
-    "test": "echo 'no tests written yet.'",
+    "test": "jest --forceExit",
+    "test:watch": "jest --watchAll --coverage",
     "heroku-postbuild": "npm run build",
     "start:worker:mails": "cross-env NODE_ENV=production node server/workers/mails.js",
     "start:worker:mails:dev": "cross-env NODE_ENV=development node server/workers/mails.js"
@@ -25,25 +26,25 @@
   },
   "homepage": "https://github.com/kati-frantz/more-recipes#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.3.1",
+    "babel-jest": "^24.0.0",
     "faker": "^4.1.0",
     "forever": "^0.15.3",
     "forever-monitor": "^1.7.1",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.0.0",
     "pm2": "^2.9.1"
   },
   "dependencies": {
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
-    "babel-plugin-transform-es2015-destructuring": "6.23.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "1.6.1",
-    "babel-preset-es2015": "6.24.1",
-    "babel-preset-es2015-node": "6.1.1",
     "babel-watch": "2.0.7",
-    "bcrypt": "1.0.3",
+    "bcrypt": "^3.0.2",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "cross-env": "5.1.1",
@@ -68,15 +69,12 @@
     "redis-commands": "1.3.1",
     "sequelize": "4.19.0",
     "sequelize-cli": "3.0.0",
-    "sqlite3": "3.1.13",
+    "sqlite3": "^4.0.6",
     "swagger-ui-express": "^2.0.15",
     "then-redis": "2.0.1",
     "validate.js": "0.12.0",
     "validator": "9.1.1",
     "validator.js": "2.0.3",
     "winston": "^2.4.0"
-  },
-  "engines": {
-    "node": "8.4.0"
   }
 }
