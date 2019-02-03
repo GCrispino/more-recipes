@@ -1,15 +1,12 @@
 //@ts-check
-import { testValidator,testValidatorAsync } from './utils';
+import { testValidatorFactory, testValidatorFactoryAsync } from './utils';
 import validators from '../../../validators'
 import { User } from '../../../database/models'
 
 const { RegisterUserValidator } = validators;
 
-const testRegisterUserValidator = (validatorObj,validatorFunctionName,beforeAction) => 
-  testValidator(RegisterUserValidator,validatorObj,validatorFunctionName,beforeAction);
-
-const testRegisterUserValidatorAsync = (validatorObj,validatorFunctionName,beforeAction) => 
-  testValidatorAsync(RegisterUserValidator,validatorObj,validatorFunctionName,beforeAction);
+const testRegisterUserValidator = testValidatorFactory(RegisterUserValidator);
+const testRegisterUserValidatorAsync = testValidatorFactoryAsync(RegisterUserValidator);
 
 describe('The RegisterUserValidator class',() => {
   describe('The validateName function', () => {

@@ -1,13 +1,10 @@
 //@ts-check
-import { testValidator,testValidatorAsync } from './utils';
+import { testValidatorFactory, testValidatorFactoryAsync } from './utils';
 import validators from '../../../validators'
 const { SignInUserValidator } = validators;
 
-const testSignInUserValidator = (validatorObj,validatorFunctionName,beforeAction) => 
-  testValidator(SignInUserValidator,validatorObj,validatorFunctionName,beforeAction);
-
-const testSignInUserValidatorAsync = (validatorObj,validatorFunctionName,beforeAction) => 
-  testValidatorAsync(SignInUserValidator,validatorObj,validatorFunctionName,beforeAction);
+const testSignInUserValidator = testValidatorFactory(SignInUserValidator);
+const testSignInUserValidatorAsync = testValidatorFactoryAsync(SignInUserValidator);
 
 describe('The SignInUserValidator class', () => {
 

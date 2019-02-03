@@ -1,10 +1,9 @@
 //@ts-check
-import { testValidator } from './utils';
+import { testValidatorFactory } from './utils';
 import validators from '../../../validators'
 const { StoreRecipeValidator } = validators;
 
-const testStoreRecipeValidator = (validatorObj,validatorFunctionName, beforeAction) => 
-  testValidator(StoreRecipeValidator,validatorObj,validatorFunctionName,beforeAction);
+const testStoreRecipeValidator = testValidatorFactory(StoreRecipeValidator);
 
 describe('The StoreRecipeValidator class', () => {
   

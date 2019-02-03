@@ -21,3 +21,9 @@ export async function testValidatorAsync(validatorClass,validatorObj,validatorFu
 
   return [ validator, result, errors ];
 }
+
+export const testValidatorFactory = validatorClass => (validatorObj,validatorFunctionName,beforeAction) => 
+  testValidator(validatorClass,validatorObj,validatorFunctionName,beforeAction);
+
+export const testValidatorFactoryAsync = validatorClass => (validatorObj,validatorFunctionName,beforeAction) => 
+  testValidatorAsync(validatorClass,validatorObj,validatorFunctionName,beforeAction);
