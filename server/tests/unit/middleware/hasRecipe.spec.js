@@ -1,14 +1,9 @@
 import middleware from "../../../middleware";
 import { User, Recipe } from "../../../database/models";
 
-const { hasRecipe } = middleware;
+import { createResAndNextMocks } from "./utils";
 
-const createResAndNextMocks = () => ({
-  res: {
-    sendFailureResponse: jest.fn()
-  },
-  next: jest.fn()
-});
+const { hasRecipe } = middleware;
 
 describe("The hasRecipe middleware", async () => {
   beforeEach(() => Recipe.destroy({ where: {} }));
