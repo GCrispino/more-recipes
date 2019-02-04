@@ -1,7 +1,7 @@
-import { updateRecipeAttributes } from '../../helpers';
+import { updateRecipeAttributes } from "../../helpers";
 
 module.exports = (sequelize, DataTypes) => {
-  const Recipe = sequelize.define('Recipe', {
+  const Recipe = sequelize.define("Recipe", {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.UUID,
       references: {
-        model: 'Users',
-        key: 'id'
+        model: "Users",
+        key: "id"
       }
     },
     title: DataTypes.STRING,
@@ -23,20 +23,23 @@ module.exports = (sequelize, DataTypes) => {
     procedure: DataTypes.TEXT
   });
 
-  Recipe.associate = (models) => {
+  Recipe.associate = models => {
     Recipe.belongsTo(models.User, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE'
+      foreignKey: "userId",
+      onDelete: "CASCADE"
     });
     Recipe.hasMany(models.Review, {
-      foreignKey: 'recipeId'
+      foreignKey: "recipeId"
     });
   };
 
-  Recipe.addHook('afterFind', async (results) => {
+  Recipe.addHook("afterFind", async results => {
     if (Array.isArray(results)) {
-      await Promise.all(results
-        .map(async sequelizeRecipe => updateRecipeAttributes(sequelizeRecipe)));
+      await Promise.all(
+        results.map(async sequelizeRecipe =>
+          updateRecipeAttributes(sequelizeRecipe)
+        )
+      );
     } else {
       return updateRecipeAttributes(results);
     }
