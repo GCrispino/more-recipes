@@ -29,6 +29,33 @@ describe("The hasRecipe middleware", async () => {
     expect(req.currentRecipe).toBeDefined();
   });
 
-  test.skip("Should call sendFailureResponse if recipe does not exist", () => {});
-  test.skip("Should call sendFailureResponse if error is thrown", () => {});
+  test("Should call sendFailureResponse if recipe does not exist", async () => {
+    const { res, next } = createResAndNextMocks();
+
+    const req = {
+      params: {
+        recipeId: null
+      }
+    };
+
+    await hasRecipe(req, res, next);
+    // assertions...
+    expect(next).not.toHaveBeenCalled();
+    expect(res.sendFailureResponse).toHaveBeenCalledWith(
+      { message: "Recipe not found." },
+      404
+    );
+  });
+
+  test("Should call sendFailureResponse if error is thrown", async () => {
+    const { res, next } = createResAndNextMocks();
+
+    await hasRecipe(undefined, res, next);
+    // assertions...
+    expect(next).not.toHaveBeenCalled();
+    expect(res.sendFailureResponse).toHaveBeenCalledWith(
+      { message: "Recipe not found." },
+      404
+    );
+  });
 });
