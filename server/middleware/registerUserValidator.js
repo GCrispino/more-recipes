@@ -1,5 +1,4 @@
-import validators from '../validators';
-
+import validators from "../validators";
 
 /**
  * Middleware to validate creating a recipe
