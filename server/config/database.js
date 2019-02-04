@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 /**
  * The different database configurations for different environments.
  */
@@ -9,16 +9,19 @@ const config = {
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
-    logging: false
+    logging: false,
+    operatorAliases: false
   },
   test: {
-    dialect: 'sqlite',
-    storage: 'database.sqlite',
-    logging: false
+    dialect: "sqlite",
+    storage: "database.sqlite",
+    logging: false,
+    operatorAliases: false
   },
   production: {
     connection_uri: process.env.DATABASE_URL,
-    logging: false
+    logging: false,
+    operatorAliases: false
   }
 };
 
