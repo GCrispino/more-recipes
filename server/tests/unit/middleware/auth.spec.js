@@ -7,15 +7,12 @@ import { User } from "../../../database/models";
 const { auth } = middleware;
 
 describe("The auth middleware", () => {
-  beforeEach(() => User.destroy({ where: {} }));
-
   test("Should call next if user is authenticated", async () => {
     const user = {
       name: "test",
       password: "12345678",
       email: faker.internet.email()
     };
-    await User.destroy({ where: {} });
     await User.create(user);
 
     const token = jwt.sign(user, config.JWT_SECRET);
@@ -37,17 +34,15 @@ describe("The auth middleware", () => {
     expect(res.sendFailureResponse).not.toHaveBeenCalled();
     expect(req).toHaveProperty("authUser", userRecord.get());
     expect(req).toHaveProperty("authUserObj", userRecord);
-    await User.destroy({ where: {} });
   });
 
   test("Should call sendFailureResponse if user is not authenticated", async () => {
     const user = {
       name: "test",
       password: "12345678",
-      email: "test@test.com"
+      email: faker.internet.email()
     };
-    await User.destroy({ where: {} });
-    await User.create({ ...user, email: "test@test2.com" });
+    await User.create({ ...user, email: faker.internet.email() });
 
     const req = {
       body: {},
@@ -67,14 +62,15 @@ describe("The auth middleware", () => {
       { message: "Unauthenticated." },
       401
     );
-
-    await User.destroy({ where: {} });
   });
 
   test("Should throw an error if user is not found", async () => {
     const req = {
       body: {
-        access_token: jwt.sign({ email: "not@found.com" }, config.JWT_SECRET)
+        access_token: jwt.sign(
+          { email: faker.internet.email() },
+          config.JWT_SECRET
+        )
       }
     };
 

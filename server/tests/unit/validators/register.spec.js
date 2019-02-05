@@ -11,7 +11,7 @@ const testRegisterUserValidatorAsync = testValidatorFactoryAsync(
 );
 
 describe("The RegisterUserValidator class", () => {
-  beforeEach(() => User.destroy({ where: {} }));
+  // beforeEach(() => User.destroy({ where: {} }));
   describe("The validateName function", () => {
     test("The validateName function adds a required error to the errors array if name is not provided", () => {
       const [_, __, errors] = testRegisterUserValidator({}, "validateName");
