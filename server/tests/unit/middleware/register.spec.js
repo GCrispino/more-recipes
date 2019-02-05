@@ -1,16 +1,15 @@
 // @ts-check
+import faker from "faker";
 import middleware from "../../../middleware";
 import { User } from "../../../database/models";
 
 const { registerUserValidator } = middleware;
 
 test("The registerUserValidator calls the next function if the validation is successful", async () => {
-  await User.destroy({ where: {} });
-
   const user = {
     name: "the name",
     password: "1234567",
-    email: "valid@email.com"
+    email: faker.internet.email()
   };
   const req = {
     body: user

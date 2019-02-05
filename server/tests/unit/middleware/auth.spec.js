@@ -1,3 +1,4 @@
+import faker from "faker";
 import jwt from "jsonwebtoken";
 import middleware from "../../../middleware";
 import config from "../../../config";
@@ -12,7 +13,7 @@ describe("The auth middleware", () => {
     const user = {
       name: "test",
       password: "12345678",
-      email: "test@test.com"
+      email: faker.internet.email()
     };
     await User.destroy({ where: {} });
     await User.create(user);

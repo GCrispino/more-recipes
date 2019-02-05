@@ -1,3 +1,4 @@
+import faker from "faker";
 import { testValidatorFactory, testValidatorFactoryAsync } from "./utils";
 import validators from "../../../validators";
 import { User } from "../../../database/models";
@@ -76,17 +77,15 @@ describe("The RegisterUserValidator class", () => {
     });
 
     test("Adds an email taken error if user already exists with that email", async () => {
-      await User.destroy({ where: {} });
-
-      await User.create({
+      const user = await User.create({
         name: "bahdcoder",
-        email: "bahdcoder@gmail.com",
+        email: faker.internet.email(),
         password: "password"
       });
 
       const [_, __, errors] = await testRegisterUserValidatorAsync(
         {
-          email: "bahdcoder@gmail.com"
+          email: user.email
         },
         "validateEmail"
       );
@@ -97,12 +96,10 @@ describe("The RegisterUserValidator class", () => {
 
   describe("The isValid function", () => {
     test("Returns true if validation passes", async () => {
-      await User.destroy({ where: {} });
-
       const [_, result] = await testRegisterUserValidatorAsync(
         {
           name: "bahdcoder",
-          email: "bahdcoder@gmail.com",
+          email: faker.internet.email(),
           password: "password"
         },
         "isValid"
@@ -112,12 +109,10 @@ describe("The RegisterUserValidator class", () => {
     });
 
     test("Returns false if validation passes", async () => {
-      await User.destroy({ where: {} });
-
       const [_, result] = await testRegisterUserValidatorAsync(
         {
           name: "bahd",
-          email: "bahdcoder@gmail.com",
+          email: faker.internet.email(),
           password: "password"
         },
         "isValid"
