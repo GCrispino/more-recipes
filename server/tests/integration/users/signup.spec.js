@@ -23,4 +23,25 @@ describe("The user signup test", () => {
 
     expect(userfromDB).toBeTruthy();
   });
+
+  test("Should return validation error for duplicate email", async () => {
+    const fakeUser = {
+      name: "Test user",
+      email: faker.internet.email(),
+      password: "12312323"
+    };
+
+    await User.create(fakeUser);
+
+    const response = await supertest(app)
+      .post("/api/v1/users/signup")
+      .send(fakeUser)
+      .expect(422);
+
+    expect(response.body).toMatchSnapshot();
+    expect(response.body.status).toBe("fail");
+    expect(response.body.data).toEqual({
+      errors: ["A user with this email already exists."]
+    });
+  });
 });
