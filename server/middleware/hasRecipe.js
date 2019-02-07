@@ -26,7 +26,6 @@ export default async (req, res, next) => {
     req.currentRecipe = recipe;
     next();
   } catch (error) {
-    console.error(error);
     return res.sendFailureResponse({ message: "Recipe not found." }, 404);
   }
 };
