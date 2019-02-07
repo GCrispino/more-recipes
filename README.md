@@ -1,4 +1,6 @@
 # MORE-RECIPES
+**NOTE**: Forked from [bahdcasts/more-recipes](https://github.com/bahdcasts/more-recipes) and added tests as a part of the ["The complete guide to testing javascript & node applications"](https://www.udemy.com/testing-javascript/) Udemy course 
+****
 A platform for users to share awesome and exciting recipe ideas they have invented or learnt. 
 ****
 ## Introduction
