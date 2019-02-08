@@ -9,9 +9,9 @@ const getRedisClient = () => {
     return createClient(process.env.REDIS_URL);
   }
 
-  if (process.env.NODE_ENV === "test") {
-    return createClientMock();
-  }
+  // if (process.env.NODE_ENV === "test") {
+  //   return createClientMock();
+  // }
 
   return createClient();
 };
