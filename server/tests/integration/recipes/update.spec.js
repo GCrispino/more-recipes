@@ -7,13 +7,6 @@ import { generateRecipe, generateUser } from "../../utils/generate";
 import { Recipe } from "../../../database/models";
 
 describe("The update recipe process", () => {
-  /**
-   * Test middleware
-   *  User is not logged in
-   *  Recipe is not from user
-   *  Recipe does not exist
-   */
-
   test("Should not update anything if user is not logged in", async () => {
     const { user } = await generateUser();
     const fakeRecipe = generateRecipe();
